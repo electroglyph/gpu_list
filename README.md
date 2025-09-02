@@ -10,7 +10,7 @@ It relies on the existence of `HardwareInformation.qwMemorySize` keys, which wer
 Vendor and Device name are looked up in the included pci.ids file from https://pci-ids.ucw.cz/
 
 In Linux, it's a bit tougher. First it checks sysfs files `mem_info_vram_total` and `vram_total`, and uses those if found.
-If any NVidia devices are found it will use `nvidia-smi` to get an accurate VRAM total. If that fails it will check the pcie BAR memory mapping and try to estimate the VRAM. It was very close for my Intel GPU, so I kept it in. Please report any inaccurate readings.
+If any NVidia devices are found it will use `nvidia-smi` to get an accurate VRAM total. For everything else it will check the pcie BAR memory mapping and try to estimate the VRAM. It was very close for my Intel GPU, so I kept it in. Please report any inaccurate readings.
 
 ## Installation
 
