@@ -1,6 +1,6 @@
 ## gpu_list
 
-This is a simple little utility to list GPUs and their VRAM amounts in Windows and Linux. The main reason I create this is because WMI doesn't list accurate VRAM information, and it's slow, and I hate WMI a lot. The Windows code uses no external libraries or tools. Linux code will use `nvidia-smi` if necessary.
+This is a simple little utility to list GPUs and their VRAM amounts in Windows and Linux. The main reason I created this is because WMI doesn't list accurate VRAM information, and it's slow, and I hate WMI a lot. The Windows code uses no external libraries or tools. Linux code will use `nvidia-smi` if necessary.
 
 ## How it works
 
