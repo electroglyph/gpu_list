@@ -1,0 +1,54 @@
+Metadata-Version: 2.4
+Name: gpu_list
+Version: 0.1.0
+Summary: List GPUs and VRAM amounts in Windows and Linux
+Author: electroglyph
+License-Expression: BSD-2-Clause
+Project-URL: Homepage, https://github.com/electroglyph/gpu_list
+Project-URL: Repository, https://github.com/electroglyph/gpu_list
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: prettytable
+Dynamic: license-file
+
+## gpu_list
+
+This is a simple little utility to list GPUs and their VRAM amounts in Windows and Linux. The main reason I create this is because WMI doesn't list accurate VRAM information, and it's slow, and I hate WMI a lot. The Windows code uses no external libraries or tools. Linux code will use `nvidia-smi` if necessary.
+
+## How it works
+
+In Windows, it enumerates the registry keys at `SYSTEM\ControlSet001\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}` and gets the info from there.
+Vendor and Device name are looked up in the included pci.ids file from https://pci-ids.ucw.cz/
+
+In Linux, it's a bit tougher. First it checks sysfs files `mem_info_vram_total` and `vram_total`, and uses those if found.
+If any NVidia devices are found it will use `nvidia-smi` to get an accurate VRAM total. If that fails it will check the pcie BAR memory mapping and try to estimate the VRAM. It was very close for my Intel GPU, so I kept it in.
+
+## Installation
+
+`pip install gpu_list`
+
+## Usage
+
+If you just want some quick info printed out, run `gpu_list` from the console, you will get output that looks like this:
+```
+┌────────────────────────────────────────┬───────────┬─────────────────────────────┬───────────┬─────────┐
+│                 vendor                 │ vendor_id │            device           │ device_id │ vram_gb │
+├────────────────────────────────────────┼───────────┼─────────────────────────────┼───────────┼─────────┤
+│           Intel Corporation            │    8086   │        DG2 [Arc A770]       │    56a0   │  17.05  │
+│           NVIDIA Corporation           │    10de   │ GA102 [GeForce RTX 3090 Ti] │    2203   │  24.15  │
+│ Advanced Micro Devices, Inc. [AMD/ATI] │    1002   │           Raphael           │    164e   │   0.07  │
+└────────────────────────────────────────┴───────────┴─────────────────────────────┴───────────┴─────────┘
+```
+
+vram_gb = bytes / 1e9
+
+However, this is mostly meant to be used from code.  gpu_list exports one function: `get_info`. It returns a list of dicts, one dict per GPU found.
+Each dict has the following keys: `vendor`, `vendor_id`, `device`, `device_id`, and `vram_gb`
+
+Here's some example code:
+
+```
+```
